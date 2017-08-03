@@ -23,7 +23,8 @@ export default class Marker extends React.Component {
     cursor: PropTypes.string,
     visible: PropTypes.bool,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    events: PropTypes.object
+    events: PropTypes.object,
+    zIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -95,10 +96,10 @@ export default class Marker extends React.Component {
   }
 
   render() {
-    const {position, visible, title, cursor} = this.state;
+    const {position, visible, title, cursor, zIndex} = this.state;
     const [left, top] = position;
     return (
-      <div ref='markderWarper' style={{position: 'absolute', top: top, left: left, visibility: visible ? 'visible' : 'hidden', cursor: cursor}}>
+      <div ref='markderWarper' style={{position: 'absolute', top: top, left: left, visibility: visible ? 'visible' : 'hidden', cursor: cursor, 'z-index': zIndex}}>
         {title}
         {this.props.children ? this.props.children : <div className='marker-default-style'></div>}
       </div>
