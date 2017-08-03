@@ -39,7 +39,7 @@ export default class BgMap extends React.Component {
 
   render() {
     return (
-      <div id='mapContainer'></div>
+      <div id='mapContainer'>{this.props.children}</div>
     );
   }
 }

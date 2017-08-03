@@ -7,27 +7,31 @@ export default class Route extends React.Component {
   }
 
   componentDidMount() {
+    const {lineColor, lineWidth} = this.props;
     const canvas = this.refs['myCanvas'];
     const paths = this.props.paths;
     const context=canvas.getContext("2d");
+    context.strokeStyle = lineColor;
+    context.lineWidth = lineWidth;
     paths.forEach((path) => {
       let start = true;
-      for (let i = path.length; i >= 0; i--) {
+      context.beginPath();
+      for (let i = 0; i < path.length; i++) {
         if (start) {
           start = false;
-          context.moveTo(path[i]);
+          context.moveTo(...path[i]);
         } else {
-          context.lineTo(path[i]);
+          context.lineTo(...path[i]);
         }
       }
+      context.stroke();
     });
-    context.stroke();
   }
 
   render() {
     const {width, height} = this.props;
     return (
-      <canvas ref='myCanvas'></canvas>
+      <canvas ref='myCanvas' width={width} height={height} style={{position : 'absolute'}}></canvas>
     );
   }
 }
