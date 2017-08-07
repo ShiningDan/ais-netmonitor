@@ -1,0 +1,37 @@
+.marker-style1 {
+  width: 16px;
+  height: 16px;
+  border: 1px solid;
+  border-radius: 50%;
+}
+
+.marker-style1 div {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+.good {
+  border-color: #589ABE;
+}
+
+.good div {
+  background-color: #589ABE;
+}
+
+.warnning {
+  border-color: #ECC543;
+}
+
+.warnning div {
+  background-color: #ECC543;
+}
+
+.error {
+  border-color: #AD232B;
+}
+
+.error div {
+  background-color: #E36B81;;
+}

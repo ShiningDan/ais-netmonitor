@@ -9,26 +9,22 @@ export default class Marker extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      visible: true,
-      position: [0, 0],
-      title: '',
-      cursor: 'inherit'
-    }
     this.events = {};
   }
 
   static PropTypes = {
     position: PropTypes.array,
-    cursor: PropTypes.string,
     visible: PropTypes.bool,
-    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     events: PropTypes.object,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    cursor: PropTypes.string,
     zIndex: PropTypes.number,
   }
 
   static defaultProps = {
-    visible: true
+    position: [0, 0],
+    visible: true,
+    zIndex: 100,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -40,7 +36,7 @@ export default class Marker extends React.Component {
 
   handleAllDiffs = (diffs) => {
     Object.keys(diffs).forEach( key => {
-      if ( key === 'event') {
+      if ( key === 'events') {
         // 注销所有的事件，然后在重新绑定
         this.unRegisterEvent();
         this.registerEvent();
@@ -50,8 +46,8 @@ export default class Marker extends React.Component {
   }
 
   registerEvent = () => {
-    // 未测试！！！！
     const {events} = this.props;
+    //isObject 逻辑？？？
     if (events && isObject(events)) {
       Object.keys(events).forEach(eventName => {
         let func = events[eventName];
@@ -70,7 +66,6 @@ export default class Marker extends React.Component {
   }
 
   unRegisterEvent = () => {
-    // 未测试！！！
     Object.keys(this.events).forEach( eventName => {
       this.events[eventName].forEach( handler => {
         this.refs['markderWarper'].removeEventListener(eventName, handler);
@@ -79,14 +74,6 @@ export default class Marker extends React.Component {
   }
 
   componentDidMount() {
-    const option = omit(this.props, ['event', 'key']);
-    const {position, visible, title, cursor} = option;
-    this.setState({
-      position: position,
-      visible: visible,
-      title: title,
-      cursor: cursor
-    });
     this.registerEvent();
   }
 
@@ -96,10 +83,18 @@ export default class Marker extends React.Component {
   }
 
   render() {
-    const {position, visible, title, cursor, zIndex} = this.state;
+    const {position, visible, title, cursor, zIndex} = this.props;
     const [left, top] = position;
+    const style = {
+      position: 'absolute', 
+      top: top, 
+      left: left, 
+      visibility: visible ? 'visible' : 'hidden', 
+      cursor: cursor, 
+      zIndex: zIndex
+    }
     return (
-      <div ref='markderWarper' style={{position: 'absolute', top: top, left: left, visibility: visible ? 'visible' : 'hidden', cursor: cursor, 'z-index': zIndex}}>
+      <div ref='markderWarper' style={style}>
         {title}
         {this.props.children ? this.props.children : <div className='marker-default-style'></div>}
       </div>

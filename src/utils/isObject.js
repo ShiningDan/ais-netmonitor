@@ -13,9 +13,9 @@ export default function isPlainObject(obj) {
     return true;
   }
 
-  const construtor = proto.construtor;
+  const constructor = proto.constructor;
 
   return typeof constructor === 'function' 
-    && construtor instanceof constructor
+    && constructor instanceof constructor
     && fnToString(constructor) === fnToString(Object);
 }
