@@ -10,6 +10,8 @@ export default class MarkerStyle1 extends Marker {
 
   static PropTypes = {
     status: PropTypes.oneOf(['good', 'warnning', 'error']),
+    width: PropTypes.string,
+    height: PropTypes.string,
   }
 
   static defaultProps = {
@@ -23,15 +25,25 @@ export default class MarkerStyle1 extends Marker {
       console.log(event.currentTarget);
     }
 
-    const {status} = this.props;
+    const {status, width, height} = this.props;
+    const style = {
+      width: width ? width : '16px',
+      height: height ? height : '16px',
+      borderWidth: width? `calc(${width} * 0.1)` : '1px',
+    }
+    const innerStyle = {
+      width: width ? `calc(${width} * 0.7)` : '10px',
+      height: height ? `calc(${height} * 0.7)` : '10px',
+      margin: width ? `calc(${width} * 0.15)` : '3px',
+    }
 
     return (
       <Marker {...this.props}
         events={{
           click: onClick
         }}>
-        <div className={`marker-style1 ${status}`}>
-          <div></div>
+        <div className={`marker-style1 ${status}`} style={style}>
+          <div style={innerStyle}></div>
         </div>
       </Marker>
     );

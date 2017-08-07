@@ -1,4 +1,5 @@
 import React from 'react'
+import MarkerStyle1 from '../marker/markerStyle1.jsx'
 import './legend.css';
 
 export default class Legend extends React.PureComponent {
@@ -50,11 +51,11 @@ export default class Legend extends React.PureComponent {
         </div>
         <div className='legend-divide'></div>
         <div className='legend-marker'>
-          <div className='legend-icon'></div>
+          <MarkerStyle1 status='good' width='48px' height='48px'></MarkerStyle1>
           <div className='legend-icon-desc'>网络正常</div>
         </div>
         <div className='legend-marker'>
-          <div className='legend-icon'></div>
+          <MarkerStyle1 status='error' width='48px' height='48px'></MarkerStyle1>
           <div className='legend-icon-desc'>网络故障</div>
         </div>
       </div>

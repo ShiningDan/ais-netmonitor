@@ -1,15 +1,10 @@
 .marker-style1 {
-  width: 16px;
-  height: 16px;
   border: 1px solid;
   border-radius: 50%;
 }
 
 .marker-style1 div {
-  width: 10px;
-  height: 10px;
   border-radius: 50%;
-  margin: 3px;
 }
 
 .good {
@@ -29,7 +24,7 @@
 }
 
 .error {
-  border-color: #AD232B;
+  border-color: #E36B81;
 }
 
 .error div {

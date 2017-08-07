@@ -1,19 +1,65 @@
-.tipbox-holder {
+/*.tipbox-holder {
   background-color: #19325A;
   opacity: 0.7;
   border-radius: 10px;
   border: 2px solid rgba(0, 154, 97, 0.7);
   border-top: 0px;
   border-top-left-radius: 0px
-}
-.tipbox-title {
+}*/
+/*.tipbox-title {
   background-color: #19325A;
   opacity: 0.7;
-  border-radius: 10px;
+  border-radius: 10px 10px 0 0;
   border: 2px solid rgba(0, 154, 97, 0.7);
   border-bottom: 0px;
-  border-bottom-left-radius: 0px;
-  border-bottom-right-radius: 0px; 
   padding: 4px;
+  font-size: 22px;
   color: #FFF;
+  padding: 32px;
+}*/
+
+.tipbox-title {
+  position: absolute;
+  margin: 32px;
+  font-size: 22px;
+  color: #FFF;
+  font-weight: 300;
+}
+
+.tipbox-holder{
+  position: absolute;
+}
+
+.tipbox-border-container {
+  position: relative;
+}
+
+.left-top-div {
+  position: absolute;
+  border-radius: 10px 30px 0 0;
+  background-color: #19325A;
+  opacity: 0.7;
+  border: 3px solid rgba(0, 154, 97, 0.7);
+  border-bottom: transparent;
+  border-right: transparent;
+}
+
+.left-bottom-div {
+  position: absolute;
+  border-bottom-left-radius: 10px;
+  background-color: #19325A;
+  opacity: 0.7;
+  border: 3px solid rgba(0, 154, 97, 0.7);
+  border-top: transparent;
+  border-right: transparent;
+}
+
+.right-bottom-div {
+  position: absolute;
+  border-radius: 0 10px 10px 0;
+  background-color: #19325A;
+  opacity: 0.7;
+  border: 3px solid rgba(0, 154, 97, 0.7);
+  border-left: transparent;
+  float: left
 }

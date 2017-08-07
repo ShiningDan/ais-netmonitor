@@ -6,6 +6,7 @@ import RouteLayer from '../src/components/route/routeLayer.jsx';
 import Marker from '../src/components/marker/markerStyle1.jsx';
 import Tipbox from '../src/components/tipbox/tipbox.jsx';
 import Legend from '../src/components/tipbox/legend.jsx';
+import Title from '../src/components/title/title.jsx';
 
 class Index extends React.Component {
 
@@ -33,9 +34,11 @@ class Index extends React.Component {
     return (
       <Map>
         <RouteLayer width='600px' height='600px' paths={paths}/>
+        <Title title='Server Network Data Visualization Analysis System | Global'
+          subtitle='机房可视化大数据分析系统 | 全球概况'
+          position={[100, 100]}></Title>
         <Marker position={[200, 400]} cursor='pointer' status='warnning'></Marker>
-        <Legend />
-        {/*<Tipbox position={[200, 400]} width='600px' height='300px' title='利用率 & 流量状态'/>*/}
+        {/*<Tipbox position={[200, 400]} width='640px' height='418px' title='利用率 & 流量状态'><Legend /></Tipbox>*/}
       </Map>
     );
   }

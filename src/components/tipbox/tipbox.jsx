@@ -35,21 +35,50 @@ export default class Tipbox extends React.Component {
       visibility: visible ? 'visible' : 'hidden'
     }
 
-    const holderStyle = {
-      width: width,
-      height: `calc(${height} - 40px)`,
-    }
-
-    const titleStyle = {
-      width: `calc(${width} - 100px)`,
-      height: '40px'
-    }
-
     return (
       <div style={containerStyle} className='tipbox-container'>
-        <div className='tipbox-title' style={titleStyle}>{title}</div>
-        <div className='tipbox-holder' style={holderStyle}>{this.props.children}</div>
+        {/*<div className='tipbox-title' style={titleStyle}>{title}</div>
+        <div className='tipbox-holder' style={holderStyle}>{this.props.children}</div>*/}
+        <TipboxBorder width={width} height={height} title={title}>{this.props.children}</TipboxBorder>        
       </div>
     );
   }
+}
+
+const TipboxBorder = ({width, height, title, children}) => {
+
+  const rightBottomStyle = {
+    width: '180px',
+    height: `calc(${height} - 30px)`,
+    top: '30px',
+    left: `calc(${width} - 177px)`,
+  }
+
+  const leftBottomStyle = {
+    width: `calc(${width} - 180px)`,
+    height: `calc(${height} - 30px)`,
+    top: '33px',
+    left: 0,
+  }
+
+  const leftTopStyle = {
+    width: `calc(${width} - 180px)`,
+    height: '30px',
+    top: 0,
+    left: 0,
+  }
+
+  const holderStyle = {
+    top: '100px',
+  }
+
+  return (
+    <div className='tipbox-border-container'>
+      <div className='left-top-div' style={leftTopStyle}></div>
+      <div className='left-bottom-div' style={leftBottomStyle}></div>
+      <div className='right-bottom-div' style={rightBottomStyle}></div>
+      <div className='tipbox-title' >{title}</div>
+      <div className='tipbox-holder' style={holderStyle}>{children}</div>
+    </div> 
+  );
 }
