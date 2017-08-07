@@ -7,8 +7,13 @@ import Marker from '../src/components/marker/markerStyle1.jsx';
 import Tipbox from '../src/components/tipbox/tipbox.jsx';
 import Legend from '../src/components/tipbox/legend.jsx';
 import Title from '../src/components/title/title.jsx';
+import BgImage from '../src/components/bgImage/bgImage.jsx';
 
 class Index extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
 
   render() {
     let paths = [
@@ -32,14 +37,28 @@ class Index extends React.Component {
       }
     ];
     return (
-      <Map>
-        <RouteLayer width='600px' height='600px' paths={paths}/>
+      <BgImage width='2800px' height='2100px' imageUrl='../resources/images/bg-world-map.png'>
+        <RouteLayer width='2800px' height='2100px' paths={paths}/>
         <Title title='Server Network Data Visualization Analysis System | Global'
-          subtitle='机房可视化大数据分析系统 | 全球概况'
-          position={[100, 100]}></Title>
-        <Marker position={[200, 400]} cursor='pointer' status='warnning'></Marker>
-        {/*<Tipbox position={[200, 400]} width='640px' height='418px' title='利用率 & 流量状态'><Legend /></Tipbox>*/}
-      </Map>
+          subtitle='网络机房可视化大数据分析系统 | 全球概况'
+          position={[60, 68]}>
+        </Title>
+        <Marker position={[440, 870]} cursor='pointer' status='good' title='圣何塞' subTitle='San Jose' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[724, 740]} cursor='pointer' status='good' title='艾斯本' subTitle='Ashburn' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[946, 1320]} cursor='pointer' status='good' title='圣保罗' subTitle='San Paulo' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[1286, 700]} cursor='pointer' status='good' title='伦敦' subTitle='London' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[1390, 640]} cursor='pointer' status='good' title='法兰克福' subTitle='Frankfurt' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[1618, 610]} cursor='pointer' status='good' title='莫斯科' subTitle='Moscow' titleRelativePosition={['30px', '40px']}></Marker>
+        <Marker position={[1724, 930]} cursor='pointer' status='good' title='迪拜' subTitle='Dubai' titleRelativePosition={['30px', '26px']}></Marker>
+        <Marker position={[1860, 1000]} cursor='pointer' status='good' title='孟买' subTitle='Mumbai' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[2050, 1130]} cursor='pointer' status='good' title='新加坡' subTitle='Singapore' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[2140, 980]} cursor='pointer' status='good' title='香港' subTitle='HongKong' titleRelativePosition={['0px', '70px']}></Marker>
+        <Marker position={[2190, 910]} cursor='pointer' status='good' title='上海' subTitle='Shanghai' titleRelativePosition={['30px', '30px']}></Marker>
+        <Marker position={[2338, 850]} cursor='pointer' status='good' title='东京' subTitle='Tokyo' titleRelativePosition={['30px', '40px']}></Marker>
+        <Marker position={[2410, 1390]} cursor='pointer' status='good' title='悉尼' subTitle='Sydney' titleRelativePosition={['30px', '40px']}></Marker>  
+        <Tipbox position={[40, 1632]} width='640px' height='418px' title='利用率 & 流量'><Legend /></Tipbox>
+        <Tipbox position={[770, 1702]} width='1982px' height='346px' title='利用率 & 流量状态'></Tipbox>        
+      </BgImage>
     );
   }
 }

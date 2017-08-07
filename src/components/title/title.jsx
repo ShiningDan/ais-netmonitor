@@ -23,12 +23,13 @@ export default class Title extends React.Component {
 
   render() {
 
-    const {title, subtitle, position} = this.props;
+    const {title, subtitle, position, visible} = this.props;
     const [left,top] = position;
 
     const containerStyle = {
       top: top,
       left: left,
+      visibility: visible ? 'visible' : 'hidden'
     }
 
     return (

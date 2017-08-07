@@ -17,12 +17,19 @@ export default class Marker extends React.Component {
     visible: PropTypes.bool,
     events: PropTypes.object,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    titleRelativePosition: PropTypes.array,
+    titleFontStyle: PropTypes.string,
+    subTitleFontStyle: PropTypes.string, 
+    titleColor: PropTypes.string,
+    subTitleColor: PropTypes.string,
     cursor: PropTypes.string,
     zIndex: PropTypes.number,
   }
 
   static defaultProps = {
     position: [0, 0],
+    titleRelativePosition: [0, 0],
     visible: true,
     zIndex: 100,
   }
@@ -83,8 +90,9 @@ export default class Marker extends React.Component {
   }
 
   render() {
-    const {position, visible, title, cursor, zIndex} = this.props;
+    const {position, visible, title, cursor, zIndex, subTitle, titleRelativePosition, titleFontStyle, subTitleFontStyle, titleColor, subTitleColor} = this.props;
     const [left, top] = position;
+    const [titleLeft, titleTop] = titleRelativePosition;
     const style = {
       position: 'absolute', 
       top: top, 
@@ -93,9 +101,29 @@ export default class Marker extends React.Component {
       cursor: cursor, 
       zIndex: zIndex
     }
+
+    const titleContainerStyle = {
+      position: 'relative',
+      left: titleLeft,
+      top: titleTop,
+    }
+
+    const titleStyle = {
+      font: titleFontStyle,
+      color: titleColor,
+    }
+
+    const subTitleStyle = {
+      font: subTitleFontStyle,
+      color: subTitleColor,
+    }
+
     return (
       <div ref='markderWarper' style={style}>
-        {title}
+        <div className='marker-title-container' style={titleContainerStyle}>
+          <div style={titleStyle}>{title}</div>
+          <div style={subTitleStyle}>{subTitle}</div>
+        </div>
         {this.props.children ? this.props.children : <div className='marker-default-style'></div>}
       </div>
     );

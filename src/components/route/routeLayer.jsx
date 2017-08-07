@@ -10,7 +10,7 @@ export default class RouteLayer extends React.Component {
   static PropTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
-    path: PropTypes.array,
+    paths: PropTypes.array,
     zIndex: PropTypes.number,
     visible: PropTypes.bool
   }
@@ -18,7 +18,7 @@ export default class RouteLayer extends React.Component {
   static defaultProps = {
     width: '600px',
     height: '600px',
-    path: [],
+    paths: [],
     zIndex: 50,
     visible: true,
   }
@@ -44,9 +44,8 @@ export default class RouteLayer extends React.Component {
   // 如何处理事件？？？
 
   componentDidMount() {
-    const {strokeColor, lineWidth, strokeStyle} = this.props;
+    const {strokeColor, lineWidth, strokeStyle, paths} = this.props;
     const canvas = this.refs['routeLayer'];
-    const paths = this.props.paths;
     const context=canvas.getContext("2d");
 
     paths.forEach((path) => {

@@ -16,7 +16,13 @@ export default class MarkerStyle1 extends Marker {
 
   static defaultProps = {
     visible: true,
-    status: 'good'
+    status: 'good',
+    width: '16px',
+    height: '16px',
+    titleFontStyle: '22px',
+    subTitleFontStyle: '22px',
+    titleColor: '#FAFAFA',
+    subTitleColor: '#FAFAFA',
   }
 
   render() {
