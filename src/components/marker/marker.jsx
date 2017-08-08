@@ -94,6 +94,8 @@ export default class Marker extends React.Component {
     const [left, top] = position;
     const [titleLeft, titleTop] = titleRelativePosition;
     const style = {
+      width: '1px',
+      height: '1px',
       position: 'absolute', 
       top: top, 
       left: left, 
@@ -103,7 +105,8 @@ export default class Marker extends React.Component {
     }
 
     const titleContainerStyle = {
-      position: 'relative',
+      position: 'absolute',
+      whiteSpace: 'nowrap',
       left: titleLeft,
       top: titleTop,
     }

@@ -51,11 +51,11 @@ export default class Legend extends React.PureComponent {
         </div>
         <div className='legend-divide'></div>
         <div className='legend-marker'>
-          <MarkerStyle1 status='good' width='48px' height='48px'></MarkerStyle1>
+          <MarkerStyle1 status='good' width='48px' height='48px' position={[24, 24]}></MarkerStyle1>
           <div className='legend-icon-desc'>网络正常</div>
         </div>
         <div className='legend-marker'>
-          <MarkerStyle1 status='error' width='48px' height='48px'></MarkerStyle1>
+          <MarkerStyle1 status='error' width='48px' height='48px' position={[24, 24]}></MarkerStyle1>
           <div className='legend-icon-desc'>网络故障</div>
         </div>
       </div>

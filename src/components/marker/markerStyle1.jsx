@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import Marker from './marker.jsx';
 import './markerStyle1.css'
 
-export default class MarkerStyle1 extends Marker {
+export default class MarkerStyle1 extends React.Component{
 
   constructor(props) {
     super(props);
@@ -12,6 +12,18 @@ export default class MarkerStyle1 extends Marker {
     status: PropTypes.oneOf(['good', 'warnning', 'error']),
     width: PropTypes.string,
     height: PropTypes.string,
+    position: PropTypes.array,
+    visible: PropTypes.bool,
+    events: PropTypes.object,
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    titleRelativePosition: PropTypes.array,
+    titleFontStyle: PropTypes.string,
+    subTitleFontStyle: PropTypes.string, 
+    titleColor: PropTypes.string,
+    subTitleColor: PropTypes.string,
+    cursor: PropTypes.string,
+    zIndex: PropTypes.number,
   }
 
   static defaultProps = {
@@ -33,13 +45,16 @@ export default class MarkerStyle1 extends Marker {
 
     const {status, width, height} = this.props;
     const style = {
-      width: width ? width : '16px',
-      height: height ? height : '16px',
+      position: 'absolute',
+      top: height ? `calc(-${height} * 0.5)` : '-8px',
+      left: width ? `calc(-${width} * 0.5)` : '-8px',
+      width: width ? `calc(${width} * 0.9)` : '15px',
+      height: height ? `calc(${height} * 0.9)` : '15px',
       borderWidth: width? `calc(${width} * 0.1)` : '1px',
     }
     const innerStyle = {
-      width: width ? `calc(${width} * 0.7)` : '10px',
-      height: height ? `calc(${height} * 0.7)` : '10px',
+      width: width ? `calc(${width} * 0.6)` : '9px',
+      height: height ? `calc(${height} * 0.6)` : '9px',
       margin: width ? `calc(${width} * 0.15)` : '3px',
     }
 

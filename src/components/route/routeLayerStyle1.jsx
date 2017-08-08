@@ -20,11 +20,15 @@ export default class RouteLayerStyle1 extends React.Component {
   }
 
   static PropTypes = {
-    paths: PropTypes.array,
+    width: PropTypes.string,
+    height: PropTypes.string,
+    links: PropTypes.array,
+    zIndex: PropTypes.number,
+    visible: PropTypes.bool,
   }
 
   static defaultProps = {
-    paths: [],
+    links: [],
   }
 
   getLineWidth = (bandwidth) => {
@@ -41,13 +45,36 @@ export default class RouteLayerStyle1 extends React.Component {
     }
   }
 
+  getStatusColor = (status) => {
+    let color = this.statusColor[status];
+    if (!color) {
+      color = this.statusColor['good'];
+    }
+    return color;
+  }
+
+  getStatusStyle = (status) => {
+    let style = this.statusStyle[status];
+    if (!style) {
+      style = this.statusStyle['good'];
+    }
+    return style;
+  }
+
   render() {
 
-    let {paths} = this.props;
-
+    let {links} = this.props;
+    let paths = links.map((link) => {
+      return {
+        path: link.path,
+        strokeColor: this.getStatusColor(link.status),
+        strokeStyle: this.getStatusStyle(link.status),
+        lineWidth: this.getLineWidth(link.bandwidth),
+      }
+    })
 
     return (
-      <RouteLayer></RouteLayer>
+      <RouteLayer {...this.props} paths={paths}></RouteLayer>
     );
   }
 }
