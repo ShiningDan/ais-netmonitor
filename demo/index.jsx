@@ -44,11 +44,13 @@ class Index extends React.Component {
           subtitle='网络机房可视化大数据分析系统 | 全球概况'
           position={[60, 68]}>
         </Title>
-        {
-          citys.map((city, index) => {
-            return <Marker key={index} position={city.position} cursor='pointer' status='good' title={city.name} subTitle={city.EnglishName} titleRelativePosition={city.titleRelativePosition}></Marker>
-          })
-        }
+        <div>
+          {
+            citys.map((city, index) => {
+              return <Marker key={index} position={city.position} cursor='pointer' status='good' title={city.name} subTitle={city.EnglishName} titleRelativePosition={city.titleRelativePosition}></Marker>
+            })
+          }
+        </div>
         {/*<Marker position={[440, 870]} cursor='pointer' status='good' title='圣何塞' subTitle='San Jose' titleRelativePosition={['0px', '20px']}></Marker>
         <Marker position={[724, 740]} cursor='pointer' status='good' title='艾斯本' subTitle='Ashburn' titleRelativePosition={['0px', '70px']}></Marker>
         <Marker position={[946, 1320]} cursor='pointer' status='good' title='圣保罗' subTitle='San Paulo' titleRelativePosition={['0px', '70px']}></Marker>

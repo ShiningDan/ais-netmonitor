@@ -58,6 +58,7 @@ export default class RouteLayer extends React.Component {
       }
       let start = true;
       context.beginPath();
+      context.lineJoin = "round";
       const pathDots = path.path;
       for (let i = 0; i < pathDots.length; i++) {
         if (start) {
