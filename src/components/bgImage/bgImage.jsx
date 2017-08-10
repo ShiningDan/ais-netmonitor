@@ -13,18 +13,20 @@ export default class BgImage extends React.PureComponent {
     position: PropTypes.array,
     visible: PropTypes.bool,
     imageUrl: PropTypes.string,
+    zIndex: PropTypes.string,
   }
 
   static defaultProps = {
     width: '100px',
     height: '100px',
     position: [0, 0],
-    visible: true
+    visible: true,
+    zIndex: '1',
   }
 
   render() {
 
-    const {width, height, position, visible, imageUrl} = this.props;
+    const {width, height, position, visible, imageUrl, zIndex} = this.props;
     const [left, top] = position;
 
     const containerStyle = {
@@ -33,7 +35,8 @@ export default class BgImage extends React.PureComponent {
       top: top,
       left: left,
       visibility: visible ? 'visible' : 'hidden',
-      backgroundImage: `url(${imageUrl})`
+      backgroundImage: `url(${imageUrl})`,
+      zIndex: zIndex,
     }
 
     return (

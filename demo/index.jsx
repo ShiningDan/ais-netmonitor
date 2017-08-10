@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Map from '../src/components/map/map.jsx';
 import RouteLayer from '../src/components/route/routeLayerStyle1.jsx';
+import RouteLayerHalo from '../src/components/route/routeLayerHaloFlow.jsx';
 import Marker from '../src/components/marker/markerStyle1.jsx';
 import Tipbox from '../src/components/tipbox/tipbox.jsx';
 import Legend from '../src/components/tipbox/legend.jsx';
@@ -39,7 +40,8 @@ class Index extends React.Component {
     ];
     return (
       <BgImage width='2800px' height='2100px' imageUrl='../resources/images/bg-world-map.png'>
-        <RouteLayer width='2800px' height='2100px' links={links}/>
+        {/*<RouteLayer width='2800px' height='2100px' links={links}/>*/}
+        <RouteLayerHalo width='2800' height='2100' links={links} zIndex='49'/>
         <Title title='Server Network Data Visualization Analysis System | Global'
           subtitle='网络机房可视化大数据分析系统 | 全球概况'
           position={[60, 68]}>

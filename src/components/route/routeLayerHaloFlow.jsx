@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import getLength from '../../utils/getLength.js';
 
 export default class RouteLayerHalo extends React.Component {
 
@@ -26,6 +27,9 @@ export default class RouteLayerHalo extends React.Component {
     function( callback ){
       window.setTimeout(callback, 1000 / 60);
     };
+    this.context = null;
+    this.step = 0;
+    this.isBlur = false;
   }
 
   static PropTypes = {
@@ -59,17 +63,19 @@ export default class RouteLayerHalo extends React.Component {
         // this.registerEvent();
         return ;
       } else if(key === 'links') {
+        let links = diffs['links'];
+        let flows = this.state.flows;
+        flows = this.updateFlowsFromLinks(links, flows);
         this.setState({
-          links: diffs[key]
+          flows: flows,
+          links: links,
         })
       }
     })
   }
 
-  // 如何处理事件？？？
-
-  animate = () => {
-    const {links, flows} = this.state;
+  // 通过 links 的更新来更新 flows
+  updateFlowsFromLinks = (links, flows) => {
     // 目前的策略是，只有 lineWidth 为 7 的数据流才有动画的效果
     // 首先判断当前 flows 中有哪些已经消失
     Object.keys(flows).forEach( flow => {
@@ -88,25 +94,65 @@ export default class RouteLayerHalo extends React.Component {
     })
     // 其次，再判断哪些路径需要被新添加到 flows 中
     links.forEach( link => {
-      if (getLineWidth(link.bandwidth) >= 7) {
+      if (this.getLineWidth(link.bandwidth) >= 5) {
         let exist = flows[link.from + "," + link.to] || flows[link.to + "," + link.from];
         if (!exist && link.path.length > 1) {
           // 添加 link 到 flows 中
           let sections = [];
           for (let i = 0; i < link.path.length - 1; i++) {
+            let dots = [];
+            dots.push(new Dot(link.path[i][0], link.path[i][1], 25, link.path[i + 1], dots, this.context))
             sections.push({
               from: link.path[i],
               to: link.path[i + 1],
-              dots: [new Dot(link.path[i][0], link.path[i][1])]
+              dots: dots,
             })
           }
           flows[link.from + "," + link.to] = sections;
         }
       }
     })
+    return flows;
+  }
+
+  // 如何处理事件？？？
+
+  animate = () => {
+    this.step++;
+    let {flows} = this.state;
+    const {width, height} = this.props;
+    this.context.globalCompositeOperation = "source-over";
+    this.context.fillStyle = "rgba(0, 0, 0, 0.03)";
+    this.context.shadowBlur = 0;
+    this.context.fillRect(0, 0, width, height);
+    // this.context.globalCompositeOperation = "lighter";
+
+    // this.context.shadowColor = "rgba(43, 205, 255, 1)";
+    // this.context.shadowBlur = 25;
+
 
     // 然后控制所有的 Dot 运动
+    Object.keys(flows).forEach( flow => {
+      flows[flow].forEach( section => {
+        section['dots'].forEach( dot => {
+          dot.walk();
+        })
+      })
+    })
+    if (this.step === 100) {
+      this.step = 0;
+      this.isBlur = !this.isBlur;
+      // 添加新的 Dot
+      Object.keys(flows).forEach( flow => {
+        flows[flow].forEach( section => {
+          let dots = section['dots'];
+          //link.path[i][0], link.path[i][1], 25, link.path[i + 1], dots, this.context
+          section['dots'].push(new Dot(section['from'][0], section['from'][1], this.isBlur ? 25 : 25, section['to'], dots, this.context))
+        })
+      })
+    }
 
+    requestAnimationFrame(this.animate);
   }
 
   getLineWidth = (bandwidth) => {
@@ -124,7 +170,20 @@ export default class RouteLayerHalo extends React.Component {
   }
 
   componentDidMount() {
-    animate();
+    const canvas = this.refs['routeLayer'];
+    const {width, height} = this.props;
+    canvas.setAttribute('width', width);
+    canvas.setAttribute('height', height);
+    this.context = canvas.getContext('2d');
+    if (this.context) {
+      Dot.prototype.context = this.context;
+      let flows = this.state.flows;
+      flows = this.updateFlowsFromLinks(this.props.links, flows);
+      this.setState({
+        links: this.props.links
+      })
+      this.animate();
+    }
   }
 
   componentWillUnMount() {
@@ -145,21 +204,45 @@ export default class RouteLayerHalo extends React.Component {
 }
 
 class Dot {
-  constructor(x, y, id) {
+  constructor(x, y, shadowBlur, destination, dots, context) {
     this.x = x;
     this.y = y;
-    this.id = id;
+    this.shadowBlur = shadowBlur;
     this.speed = 1;
     this.r = 4;
-    // 统计该点已经移动了多少步
-    this.step = 0;
+    this.color = 'rgba(43, 205, 255, 1)';
+    this.destination = destination;
+    this.dots = dots;
+    // this.context = context;
+    let length = getLength(x, y, destination[0], destination[1]);
+    this.direction = [(destination[0] - x)/length, (destination[1] - y)/length];
   }
+
+}
+
+Dot.prototype.walk = function() {
+  let destinationLength = getLength(this.x, this.y, this.destination[0], this.destination[1]) ;
+  if ( destinationLength <= this.speed) {
+    this.die();
+  } else {
+    this.x += this.speed * this.direction[0];
+    this.y += this.speed * this.direction[1];
+    this.draw();
+  } 
 }
 
 Dot.prototype.draw = function() {
-
+  let context = this.context;
+  context.beginPath();
+  context.fillStyle = this.color;
+  context.shadowColor = this.color;
+  context.shadowBlur = this.shadowBlur;
+  context.fillRect(this.x - this.r/2, this.y - this.r/2, this.r, this.r);
+  context.fill();
+  context.closePath();
 }
 
 Dot.prototype.die = function() {
-  
+  let dots = this.dots;
+  dots = dots.splice(dots.indexOf(this), 1)
 }
