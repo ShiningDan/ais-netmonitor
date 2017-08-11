@@ -18,6 +18,7 @@ export default class Marker extends React.Component {
     events: PropTypes.object,
     title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     subTitle: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    fontSize: PropTypes.string,
     titleRelativePosition: PropTypes.array,
     titleFontStyle: PropTypes.string,
     subTitleFontStyle: PropTypes.string, 
@@ -32,6 +33,7 @@ export default class Marker extends React.Component {
     titleRelativePosition: [0, 0],
     visible: true,
     zIndex: 100,
+    fontSize: '16px',
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,7 +92,7 @@ export default class Marker extends React.Component {
   }
 
   render() {
-    const {position, visible, title, cursor, zIndex, subTitle, titleRelativePosition, titleFontStyle, subTitleFontStyle, titleColor, subTitleColor} = this.props;
+    const {position, visible, title, cursor, zIndex, subTitle, titleRelativePosition, titleFontStyle, subTitleFontStyle, titleColor, subTitleColor, fontSize} = this.props;
     const [left, top] = position;
     const [titleLeft, titleTop] = titleRelativePosition;
     const style = {
@@ -101,6 +103,7 @@ export default class Marker extends React.Component {
       left: left, 
       visibility: visible ? 'visible' : 'hidden', 
       cursor: cursor, 
+      fontSize: fontSize,
       zIndex: zIndex
     }
 
