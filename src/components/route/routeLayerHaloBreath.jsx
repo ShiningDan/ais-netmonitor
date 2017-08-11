@@ -20,10 +20,10 @@ export default class RouteLayerHaloBreath extends React.Component {
       destroy: 'dash',
     }
     this.shadowColor = {
-      good: '#729D6C',
-      warnning: '#729D6C',
-      error: '#729D6C',
-      destroy: '#729D6C',
+      good: '#FFFFFF',
+      warnning: '#FFFFFF',
+      error: '#FFFFFF',
+      destroy: '#FFFFFF',
     }
     this.context = null;
     this.shadowBlurWide = 0;
@@ -87,16 +87,16 @@ export default class RouteLayerHaloBreath extends React.Component {
   animate = () => {
     let context = this.context;
     let {paths} = this.state;
-    context.fillStyle = "rgba(0, 0, 0,0.03)";
+    // context.fillStyle = "rgba(0, 0, 0,0.03)";
     context.shadowBlur = 0;
-    context.fillRect(0, 0, 2800, 2100);
+    context.clearRect(0, 0, 2800, 2100);
     paths.forEach( path => {
       // 目前的策略是，只有 lineWidth 为 5 的数据流才有动画的效果
       if (path.lineWidth >= 5) {
         context.strokeStyle = path.strokeColor;
         context.lineWidth = path.lineWidth;
         context.shadowColor = path.shadowColor;
-        context.shadowBlur = this.shadowBlurWide/100;
+        context.shadowBlur = this.shadowBlurWide/40;
         context.beginPath();
         context.lineJoin = "round";
         const pathDots = path.path;
@@ -113,7 +113,7 @@ export default class RouteLayerHaloBreath extends React.Component {
         context.stroke();
 
         if (!this.shadowDirection) {
-          this.shadowBlurWide ++;
+          this.shadowBlurWide += 2;
           if (this.shadowBlurWide === 1000) {
             this.shadowDirection = true
           }

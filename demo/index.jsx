@@ -11,11 +11,29 @@ import Legend from '../src/components/tipbox/legend.jsx';
 import Title from '../src/components/title/title.jsx';
 import BgImage from '../src/components/bgImage/bgImage.jsx';
 import {links, citys} from './data.js'
+import {autoRefreshInterval} from '../src/constrants.js';
 
 class Index extends React.Component {
 
   constructor(props) {
     super(props);
+    this.intervalId = null;
+  }
+
+  setAutoRefresh = () => {
+    this.intervalId = setInterval( () => {
+      this.refresh()
+    }, autoRefreshInterval)
+  }
+
+  stopAutoRefresh = () => {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  refresh = () => {
+    // 获取的数据有：链路流量，健康状况等信息，成交交易量等信息，告警信息
   }
 
   render() {

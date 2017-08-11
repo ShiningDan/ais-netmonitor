@@ -1,0 +1,1 @@
+export const autoRefreshInterval = 30 * 1000; // 毫秒

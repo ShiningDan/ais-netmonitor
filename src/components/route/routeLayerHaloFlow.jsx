@@ -36,10 +36,10 @@ export default class RouteLayerHalo extends React.Component {
     this.step = 0;
     this.isBlur = false;
     this.shadowColor = {
-      good: '#729D6C',
-      warnning: '#729D6C',
-      error: '#729D6C',
-      destroy: '#729D6C',
+      good: '#66B737',
+      warnning: '#EDC543',
+      error: '#F05729',
+      destroy: '#F05729',
     }
   }
 
@@ -149,6 +149,7 @@ export default class RouteLayerHalo extends React.Component {
     this.context.fillStyle = "rgba(0, 0, 0, 0.03)";
     this.context.shadowBlur = 0;
     this.context.fillRect(0, 0, width, height);
+    // this.context.clearRect(0, 0, width, height);
     // this.context.globalCompositeOperation = "lighter";
 
     // this.context.shadowColor = "rgba(43, 205, 255, 1)";
@@ -171,7 +172,7 @@ export default class RouteLayerHalo extends React.Component {
         flows[flow]['sections'].forEach( section => {
           let dots = section['dots'];
           //link.path[i][0], link.path[i][1], 25, link.path[i + 1], dots, this.context
-          section['dots'].push(new Dot(section['from'][0], section['from'][1], flows[flow]['shadowColor'], this.isBlur ? 0 : 25, section['to'], dots, this.context))
+          section['dots'].push(new Dot(section['from'][0], section['from'][1], flows[flow]['shadowColor'], this.isBlur ? 25 : 25, section['to'], dots, this.context))
         })
       })
     }
