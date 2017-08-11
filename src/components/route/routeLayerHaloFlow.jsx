@@ -12,14 +12,18 @@ export default class RouteLayerHalo extends React.Component {
     /**
      * flows 中的数据结构为：
      *  {
-     *    "上海,新加坡" : sections: [{
+     *    "上海,新加坡" : {
+     *       sections: [{
      *                      from: [100, 200],
      *                      to: [300, 400],
      *                      dots: [Dot, Dot]
-     *                   }]
+     *                   }],
+     *        shadowColor: 'rgba(43, 205, 255, 1)'
+     *     }
      *  }
      */
     this.events = {};
+
     this.requestAnimationFrame = window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -27,9 +31,16 @@ export default class RouteLayerHalo extends React.Component {
     function( callback ){
       window.setTimeout(callback, 1000 / 60);
     };
+
     this.context = null;
     this.step = 0;
     this.isBlur = false;
+    this.shadowColor = {
+      good: '#729D6C',
+      warnning: '#729D6C',
+      error: '#729D6C',
+      destroy: '#729D6C',
+    }
   }
 
   static PropTypes = {
@@ -46,6 +57,14 @@ export default class RouteLayerHalo extends React.Component {
     links: [],
     zIndex: 50,
     visible: true,
+  }
+
+  getshadowColor = (status) => {
+    let style = this.shadowColor[status];
+    if (!style) {
+      style = this.shadowColor['good'];
+    }
+    return style;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,7 +95,7 @@ export default class RouteLayerHalo extends React.Component {
 
   // 通过 links 的更新来更新 flows
   updateFlowsFromLinks = (links, flows) => {
-    // 目前的策略是，只有 lineWidth 为 7 的数据流才有动画的效果
+    // 目前的策略是，只有 lineWidth 为 5 的数据流才有动画的效果
     // 首先判断当前 flows 中有哪些已经消失
     Object.keys(flows).forEach( flow => {
       let isExist = false;
@@ -98,17 +117,22 @@ export default class RouteLayerHalo extends React.Component {
         let exist = flows[link.from + "," + link.to] || flows[link.to + "," + link.from];
         if (!exist && link.path.length > 1) {
           // 添加 link 到 flows 中
+          let flowName = link.from + "," + link.to;
+          let shadowColor = this.getshadowColor(link.status);
           let sections = [];
           for (let i = 0; i < link.path.length - 1; i++) {
             let dots = [];
-            dots.push(new Dot(link.path[i][0], link.path[i][1], 25, link.path[i + 1], dots, this.context))
+            dots.push(new Dot(link.path[i][0], link.path[i][1], shadowColor, 25, link.path[i + 1], dots, this.context))
             sections.push({
               from: link.path[i],
               to: link.path[i + 1],
               dots: dots,
             })
           }
-          flows[link.from + "," + link.to] = sections;
+          flows[flowName] = {
+            sections: sections,
+            shadowColor: shadowColor
+          }
         }
       }
     })
@@ -133,7 +157,7 @@ export default class RouteLayerHalo extends React.Component {
 
     // 然后控制所有的 Dot 运动
     Object.keys(flows).forEach( flow => {
-      flows[flow].forEach( section => {
+      flows[flow]['sections'].forEach( section => {
         section['dots'].forEach( dot => {
           dot.walk();
         })
@@ -144,10 +168,10 @@ export default class RouteLayerHalo extends React.Component {
       this.isBlur = !this.isBlur;
       // 添加新的 Dot
       Object.keys(flows).forEach( flow => {
-        flows[flow].forEach( section => {
+        flows[flow]['sections'].forEach( section => {
           let dots = section['dots'];
           //link.path[i][0], link.path[i][1], 25, link.path[i + 1], dots, this.context
-          section['dots'].push(new Dot(section['from'][0], section['from'][1], this.isBlur ? 25 : 25, section['to'], dots, this.context))
+          section['dots'].push(new Dot(section['from'][0], section['from'][1], flows[flow]['shadowColor'], this.isBlur ? 0 : 25, section['to'], dots, this.context))
         })
       })
     }
@@ -204,13 +228,14 @@ export default class RouteLayerHalo extends React.Component {
 }
 
 class Dot {
-  constructor(x, y, shadowBlur, destination, dots, context) {
+  constructor(x, y, shadowColor, shadowBlur, destination, dots, context) {
     this.x = x;
     this.y = y;
     this.shadowBlur = shadowBlur;
     this.speed = 1;
     this.r = 4;
-    this.color = 'rgba(43, 205, 255, 1)';
+    // this.color = 'rgba(43, 205, 255, 1)';
+    this.color = shadowColor;
     this.destination = destination;
     this.dots = dots;
     // this.context = context;

@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 
 import Map from '../src/components/map/map.jsx';
 import RouteLayer from '../src/components/route/routeLayerStyle1.jsx';
-import RouteLayerHalo from '../src/components/route/routeLayerHaloFlow.jsx';
+// import RouteLayerHalo from '../src/components/route/routeLayerHaloFlow.jsx';
+import RouteLayerHalo from '../src/components/route/routeLayerHaloBreath.jsx';
 import Marker from '../src/components/marker/markerStyle1.jsx';
 import Tipbox from '../src/components/tipbox/tipbox.jsx';
 import Legend from '../src/components/tipbox/legend.jsx';
