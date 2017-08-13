@@ -12,6 +12,8 @@ export default class Title extends React.Component {
     subtitle: PropTypes.string,
     position: PropTypes.array,
     visible: PropTypes.bool,
+    titleSize: PropTypes.string,
+    subtitleSize: PropTypes.string,
   }
 
   static defaultProps = {
@@ -19,11 +21,13 @@ export default class Title extends React.Component {
     subtitle: '',
     position: [0, 0],
     visible: true,
+    titleSize: '44px',
+    subtitleSize: '36px',
   }
 
   render() {
 
-    const {title, subtitle, position, visible} = this.props;
+    const {title, subtitle, position, visible, titleSize, subtitleSize} = this.props;
     const [left,top] = position;
 
     const containerStyle = {
@@ -32,10 +36,18 @@ export default class Title extends React.Component {
       visibility: visible ? 'visible' : 'hidden'
     }
 
+    const titleStyle = {
+      fontSize: titleSize,
+    }
+
+    const subtitleStyle = {
+      fontSize: subtitleSize,
+    }
+
     return (
       <div className='title-container' style={containerStyle}>
-        <div className='title-content'>{title}</div>
-        <div className='title-subtitle'>{subtitle}</div>
+        <div className='title-content' style={titleStyle}>{title}</div>
+        <div className='title-subtitle' style={subtitleStyle}>{subtitle}</div>
       </div>
     );
   }

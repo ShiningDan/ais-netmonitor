@@ -36,14 +36,75 @@ export default class ChinaMonitor extends React.Component {
     // 获取的数据有：链路流量，健康状况等信息，成交交易量等信息，告警信息
   }
 
+  getLineWidth = (bandwidth) => {
+    if (bandwidth <= 0) {
+      return 0;
+    } else if (bandwidth > 0 && bandwidth < 1) {
+      return 1;
+    } else if (bandwidth >= 1 && bandwidth < 1000) {
+      return 3;
+    } else if (bandwidth >= 1000 && bandwidth < 100000) {
+      return 5;
+    } else {
+      return 7;
+    }
+  }
+
+  getStatusColor = (status) => {
+    switch(status) {
+      case 'good': 
+        return '#66B737';
+      case 'warnning':
+        return '#EDC543';
+      case 'error':
+        return '#F05729';
+      case 'destroy':
+        return '#F05729';
+      default: 
+        return '#66B737';
+    }
+  }
+
+  getStatusStyle = (status) => {
+    switch(status) {
+      case 'good': 
+        return 'solid';
+      case 'warnning':
+        return 'solid';
+      case 'error':
+        return 'solid';
+      case 'destroy':
+        return 'dash';
+      default: 
+        return 'solid';
+    }
+  }
+
+  getshadowColor = (status) => {
+    return '#FFFFFF';
+  }
+
   render() {
+
+    let paths = links.map((link) => {
+      return {
+        path: link.path,
+        strokeColor: this.getStatusColor(link.status),
+        strokeStyle: this.getStatusStyle(link.status),
+        lineWidth: this.getLineWidth(link.bandwidth),
+        shadowColor: this.getshadowColor(link.status),
+      }
+    })
+
     return (
       <BgImage width='2800px' height='2100px' imageUrl='../resources/images/bg-china-map.png'>
-        <RouteLayer width='2800px' height='2100px' links={links}/>
-        <RouteLayerHalo width='2800' height='2100' links={links} zIndex='49'/>
+        <RouteLayer width='2800px' height='2100px' paths={paths}/>
+        <RouteLayerHalo width='2800' height='2100' paths={paths} zIndex='49'/>
         <Title title='Server Network Data Visualization Analysis System | China'
           subtitle='网络机房可视化大数据分析系统 | 中国概况'
-          position={[60, 68]}>
+          position={[60, 68]}
+          titleSize='50px'
+          subtitleSize='40px'>
         </Title>
         <div>
           {
@@ -59,4 +120,4 @@ export default class ChinaMonitor extends React.Component {
   }
 }
 
-ReactDOM.render(<ChinaMonitor />, document.getElementById('container'))
+// ReactDOM.render(<ChinaMonitor />, document.getElementById('container'))

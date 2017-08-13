@@ -7,24 +7,6 @@ export default class RouteLayerHaloBreath extends React.Component {
     this.state = {
       paths: [],
     }
-    this.statusColor = {
-      good: '#66B737',
-      warnning: '#EDC543',
-      error: '#F05729',
-      destroy: '#F05729',
-    }
-    this.statusStyle = {
-      good: 'solid',
-      warnning: 'solid',
-      error: 'solid',
-      destroy: 'dash',
-    }
-    this.shadowColor = {
-      good: '#FFFFFF',
-      warnning: '#FFFFFF',
-      error: '#FFFFFF',
-      destroy: '#FFFFFF',
-    }
     this.context = null;
     this.shadowBlurWide = 0;
     this.shadowDirection = false;
@@ -33,7 +15,7 @@ export default class RouteLayerHaloBreath extends React.Component {
   static PropTypes = {
     width: PropTypes.string,
     height: PropTypes.string,
-    links: PropTypes.array,
+    paths: PropTypes.array,
     zIndex: PropTypes.number,
     visible: PropTypes.bool
   }
@@ -41,7 +23,7 @@ export default class RouteLayerHaloBreath extends React.Component {
   static defaultProps = {
     width: '600px',
     height: '600px',
-    links: [],
+    paths: [],
     zIndex: 50,
     visible: true,
   }
@@ -58,30 +40,6 @@ export default class RouteLayerHaloBreath extends React.Component {
     } else {
       return 7;
     }
-  }
-
-  getStatusColor = (status) => {
-    let color = this.statusColor[status];
-    if (!color) {
-      color = this.statusColor['good'];
-    }
-    return color;
-  }
-
-  getStatusStyle = (status) => {
-    let style = this.statusStyle[status];
-    if (!style) {
-      style = this.statusStyle['good'];
-    }
-    return style;
-  }
-
-  getshadowColor = (status) => {
-    let style = this.shadowColor[status];
-    if (!style) {
-      style = this.shadowColor['good'];
-    }
-    return style;
   }
 
   animate = () => {
@@ -130,26 +88,16 @@ export default class RouteLayerHaloBreath extends React.Component {
 
   componentDidMount() {
     const canvas = this.refs['routeLayer'];
-    const {width, height} = this.props;
+    const {width, height, paths} = this.props;
     canvas.setAttribute('width', width);
     canvas.setAttribute('height', height);
     this.context = canvas.getContext('2d');
 
-    if (this.context) {
-      let {links} = this.props;
-      let paths = links.map((link) => {
-        return {
-          path: link.path,
-          strokeColor: this.getStatusColor(link.status),
-          strokeStyle: this.getStatusStyle(link.status),
-          lineWidth: this.getLineWidth(link.bandwidth),
-          shadowColor: this.getshadowColor(link.status),
-        }
-      })
-      this.setState({
-        paths: paths,
-      }, this.animate)
-    }
+    this.setState({
+      paths: paths,
+    }, () => {
+      this.animate()
+    })
   }
 
   render() {
