@@ -9978,68 +9978,13 @@ var RouteLayerStyle1 = function (_React$Component) {
   function RouteLayerStyle1(props) {
     _classCallCheck(this, RouteLayerStyle1);
 
-    var _this = _possibleConstructorReturn(this, (RouteLayerStyle1.__proto__ || Object.getPrototypeOf(RouteLayerStyle1)).call(this, props));
-
-    _this.getLineWidth = function (bandwidth) {
-      if (bandwidth <= 0) {
-        return 0;
-      } else if (bandwidth > 0 && bandwidth < 1) {
-        return 1;
-      } else if (bandwidth >= 1 && bandwidth < 1000) {
-        return 3;
-      } else if (bandwidth >= 1000 && bandwidth < 100000) {
-        return 5;
-      } else {
-        return 7;
-      }
-    };
-
-    _this.getStatusColor = function (status) {
-      var color = _this.statusColor[status];
-      if (!color) {
-        color = _this.statusColor['good'];
-      }
-      return color;
-    };
-
-    _this.getStatusStyle = function (status) {
-      var style = _this.statusStyle[status];
-      if (!style) {
-        style = _this.statusStyle['good'];
-      }
-      return style;
-    };
-
-    _this.statusColor = {
-      good: '#66B737',
-      warnning: '#EDC543',
-      error: '#F05729',
-      destroy: '#F05729'
-    };
-    _this.statusStyle = {
-      good: 'solid',
-      warnning: 'solid',
-      error: 'solid',
-      destroy: 'dash'
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (RouteLayerStyle1.__proto__ || Object.getPrototypeOf(RouteLayerStyle1)).call(this, props));
   }
 
   _createClass(RouteLayerStyle1, [{
     key: 'render',
     value: function render() {
-      var _this2 = this;
-
-      var links = this.props.links;
-
-      var paths = links.map(function (link) {
-        return {
-          path: link.path,
-          strokeColor: _this2.getStatusColor(link.status),
-          strokeStyle: _this2.getStatusStyle(link.status),
-          lineWidth: _this2.getLineWidth(link.bandwidth)
-        };
-      });
+      var paths = this.props.paths;
 
       return _react2.default.createElement(_routeLayer2.default, _extends({}, this.props, { paths: paths }));
     }
@@ -10051,12 +9996,12 @@ var RouteLayerStyle1 = function (_React$Component) {
 RouteLayerStyle1.PropTypes = {
   width: _react.PropTypes.string,
   height: _react.PropTypes.string,
-  links: _react.PropTypes.array,
+  paths: _react.PropTypes.array,
   zIndex: _react.PropTypes.number,
   visible: _react.PropTypes.bool
 };
 RouteLayerStyle1.defaultProps = {
-  links: []
+  paths: []
 };
 exports.default = RouteLayerStyle1;
 
@@ -10109,30 +10054,6 @@ var RouteLayerHaloBreath = function (_React$Component) {
       }
     };
 
-    _this.getStatusColor = function (status) {
-      var color = _this.statusColor[status];
-      if (!color) {
-        color = _this.statusColor['good'];
-      }
-      return color;
-    };
-
-    _this.getStatusStyle = function (status) {
-      var style = _this.statusStyle[status];
-      if (!style) {
-        style = _this.statusStyle['good'];
-      }
-      return style;
-    };
-
-    _this.getshadowColor = function (status) {
-      var style = _this.shadowColor[status];
-      if (!style) {
-        style = _this.shadowColor['good'];
-      }
-      return style;
-    };
-
     _this.animate = function () {
       var context = _this.context;
       var paths = _this.state.paths;
@@ -10181,24 +10102,6 @@ var RouteLayerHaloBreath = function (_React$Component) {
     _this.state = {
       paths: []
     };
-    _this.statusColor = {
-      good: '#66B737',
-      warnning: '#EDC543',
-      error: '#F05729',
-      destroy: '#F05729'
-    };
-    _this.statusStyle = {
-      good: 'solid',
-      warnning: 'solid',
-      error: 'solid',
-      destroy: 'dash'
-    };
-    _this.shadowColor = {
-      good: '#FFFFFF',
-      warnning: '#FFFFFF',
-      error: '#FFFFFF',
-      destroy: '#FFFFFF'
-    };
     _this.context = null;
     _this.shadowBlurWide = 0;
     _this.shadowDirection = false;
@@ -10213,28 +10116,18 @@ var RouteLayerHaloBreath = function (_React$Component) {
       var canvas = this.refs['routeLayer'];
       var _props = this.props,
           width = _props.width,
-          height = _props.height;
+          height = _props.height,
+          paths = _props.paths;
 
       canvas.setAttribute('width', width);
       canvas.setAttribute('height', height);
       this.context = canvas.getContext('2d');
 
-      if (this.context) {
-        var links = this.props.links;
-
-        var paths = links.map(function (link) {
-          return {
-            path: link.path,
-            strokeColor: _this2.getStatusColor(link.status),
-            strokeStyle: _this2.getStatusStyle(link.status),
-            lineWidth: _this2.getLineWidth(link.bandwidth),
-            shadowColor: _this2.getshadowColor(link.status)
-          };
-        });
-        this.setState({
-          paths: paths
-        }, this.animate);
-      }
+      this.setState({
+        paths: paths
+      }, function () {
+        _this2.animate();
+      });
     }
   }, {
     key: 'render',
@@ -10260,14 +10153,14 @@ var RouteLayerHaloBreath = function (_React$Component) {
 RouteLayerHaloBreath.PropTypes = {
   width: _react.PropTypes.string,
   height: _react.PropTypes.string,
-  links: _react.PropTypes.array,
+  paths: _react.PropTypes.array,
   zIndex: _react.PropTypes.number,
   visible: _react.PropTypes.bool
 };
 RouteLayerHaloBreath.defaultProps = {
   width: '600px',
   height: '600px',
-  links: [],
+  paths: [],
   zIndex: 50,
   visible: true
 };
@@ -10636,7 +10529,9 @@ var Title = function (_React$Component) {
           title = _props.title,
           subtitle = _props.subtitle,
           position = _props.position,
-          visible = _props.visible;
+          visible = _props.visible,
+          titleSize = _props.titleSize,
+          subtitleSize = _props.subtitleSize;
 
       var _position = _slicedToArray(position, 2),
           left = _position[0],
@@ -10648,17 +10543,25 @@ var Title = function (_React$Component) {
         visibility: visible ? 'visible' : 'hidden'
       };
 
+      var titleStyle = {
+        fontSize: titleSize
+      };
+
+      var subtitleStyle = {
+        fontSize: subtitleSize
+      };
+
       return _react2.default.createElement(
         'div',
         { className: 'title-container', style: containerStyle },
         _react2.default.createElement(
           'div',
-          { className: 'title-content' },
+          { className: 'title-content', style: titleStyle },
           title
         ),
         _react2.default.createElement(
           'div',
-          { className: 'title-subtitle' },
+          { className: 'title-subtitle', style: subtitleStyle },
           subtitle
         )
       );
@@ -10672,13 +10575,17 @@ Title.PropTypes = {
   title: _react.PropTypes.string,
   subtitle: _react.PropTypes.string,
   position: _react.PropTypes.array,
-  visible: _react.PropTypes.bool
+  visible: _react.PropTypes.bool,
+  titleSize: _react.PropTypes.string,
+  subtitleSize: _react.PropTypes.string
 };
 Title.defaultProps = {
   title: '',
   subtitle: '',
   position: [0, 0],
-  visible: true
+  visible: true,
+  titleSize: '44px',
+  subtitleSize: '36px'
 };
 exports.default = Title;
 
@@ -40188,7 +40095,7 @@ exports = module.exports = __webpack_require__(18)(undefined);
 
 
 // module
-exports.push([module.i, ".title-container {\n  position: absolute\n}\n\n.title-content {\n  font-size: 44px;\n  font-weight: 600;\n  color: #51BFF9;\n  text-shadow: 0px 4px 1px #091222;\n}\n\n.title-subtitle {\n  font-size: 36px;\n  font-weight: 500;\n  color: #3883B6;\n}", ""]);
+exports.push([module.i, ".title-container {\n  position: absolute\n}\n\n.title-content {\n  font-weight: 600;\n  color: #51BFF9;\n  text-shadow: 0px 4px 1px #091222;\n}\n\n.title-subtitle {\n  font-weight: 500;\n  color: #3883B6;\n}", ""]);
 
 // exports
 
@@ -40331,6 +40238,54 @@ var WorldMonitor = function (_React$Component) {
       // 获取的数据有：链路流量，健康状况等信息，成交交易量等信息，告警信息
     };
 
+    _this.getLineWidth = function (bandwidth) {
+      if (bandwidth <= 0) {
+        return 0;
+      } else if (bandwidth > 0 && bandwidth < 1) {
+        return 1;
+      } else if (bandwidth >= 1 && bandwidth < 1000) {
+        return 3;
+      } else if (bandwidth >= 1000 && bandwidth < 100000) {
+        return 5;
+      } else {
+        return 7;
+      }
+    };
+
+    _this.getStatusColor = function (status) {
+      switch (status) {
+        case 'good':
+          return '#66B737';
+        case 'warnning':
+          return '#EDC543';
+        case 'error':
+          return '#F05729';
+        case 'destroy':
+          return '#F05729';
+        default:
+          return '#66B737';
+      }
+    };
+
+    _this.getStatusStyle = function (status) {
+      switch (status) {
+        case 'good':
+          return 'solid';
+        case 'warnning':
+          return 'solid';
+        case 'error':
+          return 'solid';
+        case 'destroy':
+          return 'dash';
+        default:
+          return 'solid';
+      }
+    };
+
+    _this.getshadowColor = function (status) {
+      return '#FFFFFF';
+    };
+
     _this.intervalId = null;
     return _this;
   }
@@ -40338,27 +40293,23 @@ var WorldMonitor = function (_React$Component) {
   _createClass(WorldMonitor, [{
     key: 'render',
     value: function render() {
-      var paths = [{
-        path: [[200, 300], [200, 400], [300, 600]],
-        strokeColor: '#66B737',
-        strokeStyle: 'solid',
-        lineWidth: '2'
-      }, {
-        path: [[100, 300], [200, 500]],
-        strokeColor: '#EDC543',
-        strokeStyle: 'solid',
-        lineWidth: '2'
-      }, {
-        path: [[300, 300], [400, 500]],
-        strokeColor: '#F05729',
-        strokeStyle: 'dash',
-        lineWidth: '2'
-      }];
+      var _this2 = this;
+
+      var paths = _worldData.links.map(function (link) {
+        return {
+          path: link.path,
+          strokeColor: _this2.getStatusColor(link.status),
+          strokeStyle: _this2.getStatusStyle(link.status),
+          lineWidth: _this2.getLineWidth(link.bandwidth),
+          shadowColor: _this2.getshadowColor(link.status)
+        };
+      });
+
       return _react2.default.createElement(
         _bgImage2.default,
         { width: '2800px', height: '2100px', imageUrl: '../resources/images/bg-world-map.png' },
-        _react2.default.createElement(_routeLayerStyle2.default, { width: '2800px', height: '2100px', links: _worldData.links }),
-        _react2.default.createElement(_routeLayerHaloBreath2.default, { width: '2800', height: '2100', links: _worldData.links, zIndex: '49' }),
+        _react2.default.createElement(_routeLayerStyle2.default, { width: '2800px', height: '2100px', paths: paths }),
+        _react2.default.createElement(_routeLayerHaloBreath2.default, { width: '2800', height: '2100', paths: paths, zIndex: '49' }),
         _react2.default.createElement(_title2.default, { title: 'Server Network Data Visualization Analysis System | Global',
           subtitle: '\u7F51\u7EDC\u673A\u623F\u53EF\u89C6\u5316\u5927\u6570\u636E\u5206\u6790\u7CFB\u7EDF | \u5168\u7403\u6982\u51B5',
           position: [60, 68] }),

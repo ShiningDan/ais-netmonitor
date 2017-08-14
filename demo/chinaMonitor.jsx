@@ -120,4 +120,4 @@ export default class ChinaMonitor extends React.Component {
   }
 }
 
-// ReactDOM.render(<ChinaMonitor />, document.getElementById('container'))
+ReactDOM.render(<ChinaMonitor />, document.getElementById('container'))

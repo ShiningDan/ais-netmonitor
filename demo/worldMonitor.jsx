@@ -118,4 +118,4 @@ export default class WorldMonitor extends React.Component {
   }
 }
 
-// ReactDOM.render(<WorldMonitor />, document.getElementById('container'))
+ReactDOM.render(<WorldMonitor />, document.getElementById('container'))
