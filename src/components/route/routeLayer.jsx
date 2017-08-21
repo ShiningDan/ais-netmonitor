@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react';
+import omit from '../../utils/omit';
 
 export default class RouteLayer extends React.Component {
 

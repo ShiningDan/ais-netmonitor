@@ -148,8 +148,8 @@ export default class RouteLayerHalo extends React.Component {
     this.context.globalCompositeOperation = "source-over";
     this.context.fillStyle = "rgba(0, 0, 0, 0.03)";
     this.context.shadowBlur = 0;
-    this.context.fillRect(0, 0, width, height);
-    // this.context.clearRect(0, 0, width, height);
+    // this.context.fillRect(0, 0, width, height);
+    this.context.clearRect(0, 0, width, height);
     // this.context.globalCompositeOperation = "lighter";
 
     // this.context.shadowColor = "rgba(43, 205, 255, 1)";
@@ -203,7 +203,7 @@ export default class RouteLayerHalo extends React.Component {
     if (this.context) {
       Dot.prototype.context = this.context;
       let flows = this.state.flows;
-      flows = this.updateFlowsFromLinks(this.props.links, flows);
+      flows = this.updateFlowsFromLinks(this.props.paths, flows); 
       this.setState({
         links: this.props.links
       })
